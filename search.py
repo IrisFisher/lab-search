@@ -39,7 +39,7 @@ def group_matches(documents, query):
     []
     """
     return [[line for line in (enumerate(document,1)) 
-            if query.lower() in line[1].lower()] 
+            if query and (query.lower() in line[1].lower())] 
             for document in documents]
 
 def flatten_matches(names, groups):
