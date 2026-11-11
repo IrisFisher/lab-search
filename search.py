@@ -42,6 +42,7 @@ def group_matches(documents, query):
             if query and (query.lower() in line[1].lower())] 
             for document in documents]
 
+
 def flatten_matches(names, groups):
     """Return (filename, line_number, text) tuples in file and line order.
 
@@ -51,10 +52,11 @@ def flatten_matches(names, groups):
     [('a.txt', 2, 'Map')]
     >>> flatten_matches([], [])
     []
+    >>> flatten_matches(['z.txt', 'a.txt', 'b.txt'], [[(2, 'Repeat'), (4, 'Repeat')], [], [(1, 'Repeat'), (3, '  end  ')]])
+    [('z.txt', 2, 'Repeat'), ('z.txt', 4, 'Repeat'), ('b.txt', 1, 'Repeat'), ('b.txt', 3, '  end  ')]
     """
 
-    return [((x,) + y) for x, y in zip(names, (item for group in groups for item in group))]
-
+    return [match for matches in [tuple((x,) + item for item in y) for x, y in zip(names, [group for group in groups])] for match in matches]
 
 def match_counts(names, groups):
     """Return a dictionary of filename: number of matching lines, including zeros.
